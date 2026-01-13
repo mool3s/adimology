@@ -100,7 +100,7 @@ export default function WatchlistHistoryTable() {
   const calculateGain = (price: number | undefined, target: number | undefined) => {
     if (!price || !target || price === 0) return null;
     const gain = ((target - price) / price) * 100;
-    return `+${gain.toFixed(1)}%`;
+    return `${gain >= 0 ? '+' : ''}${gain.toFixed(1)}%`;
   };
 
   return (

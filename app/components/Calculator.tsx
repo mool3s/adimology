@@ -20,7 +20,7 @@ function formatResultForCopy(result: StockAnalysisResult): string {
 
   const calculateGain = (target: number) => {
     const gain = ((target - marketData.harga) / marketData.harga) * 100;
-    return gain.toFixed(2);
+    return `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}`;
   };
 
   const lines = [
@@ -46,8 +46,8 @@ function formatResultForCopy(result: StockAnalysisResult): string {
     `a (5% avg bandar): ${formatNumber(calculated.a)}`,
     `p (Brg/Avg Bid-Offer): ${formatNumber(calculated.p)}`,
     ``,
-    `Target 1: ${calculated.targetRealistis1} (+${calculateGain(calculated.targetRealistis1)}%)`,
-    `Target 2: ${calculated.targetMax} (+${calculateGain(calculated.targetMax)}%)`,
+    `Target 1: ${calculated.targetRealistis1} (${calculateGain(calculated.targetRealistis1)}%)`,
+    `Target 2: ${calculated.targetMax} (${calculateGain(calculated.targetMax)}%)`,
   ];
 
   return lines.join('\n');

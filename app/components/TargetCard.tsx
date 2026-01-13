@@ -11,7 +11,7 @@ interface TargetCardProps {
 export default function TargetCard({ emiten, sector, currentPrice, targetRealistis, targetMax }: TargetCardProps) {
   const calculateGain = (target: number) => {
     const gain = ((target - currentPrice) / currentPrice) * 100;
-    return gain.toFixed(2);
+    return `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}`;
   };
 
   return (
@@ -57,7 +57,7 @@ export default function TargetCard({ emiten, sector, currentPrice, targetRealist
             fontSize: '1rem',
             opacity: 0.9
           }}>
-            +{calculateGain(targetRealistis)}% gain
+            {calculateGain(targetRealistis)}% gain
           </div>
         </div>
 
@@ -89,7 +89,7 @@ export default function TargetCard({ emiten, sector, currentPrice, targetRealist
             fontSize: '1rem',
             opacity: 0.9
           }}>
-            +{calculateGain(targetMax)}% gain
+            {calculateGain(targetMax)}% gain
           </div>
         </div>
       </div>

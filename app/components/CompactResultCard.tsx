@@ -13,7 +13,7 @@ export default function CompactResultCard({ result }: CompactResultCardProps) {
   
   const calculateGain = (target: number) => {
     const gain = ((target - marketData.harga) / marketData.harga) * 100;
-    return gain.toFixed(2);
+    return `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}`;
   };
 
   return (
@@ -51,7 +51,7 @@ export default function CompactResultCard({ result }: CompactResultCardProps) {
             <span className="compact-value">Rp {formatNumber(stockbitData.rataRataBandar)}</span>
             {stockbitData.rataRataBandar && marketData.harga && stockbitData.rataRataBandar < marketData.harga && (
               <span style={{ fontSize: '0.65rem', color: '#888', marginTop: '2px', display: 'block' }}>
-                +{(((marketData.harga - stockbitData.rataRataBandar) / stockbitData.rataRataBandar) * 100).toFixed(1)}%
+                {marketData.harga >= stockbitData.rataRataBandar ? '+' : ''}{(((marketData.harga - stockbitData.rataRataBandar) / stockbitData.rataRataBandar) * 100).toFixed(1)}%
               </span>
             )}
           </div>
@@ -124,14 +124,14 @@ export default function CompactResultCard({ result }: CompactResultCardProps) {
             <span className="compact-label">Target Realistis</span>
             <div className="compact-target">
               <span className="compact-target-value compact-badge-success">{calculated.targetRealistis1}</span>
-              <span className="compact-target-gain">+{calculateGain(calculated.targetRealistis1)}%</span>
+              <span className="compact-target-gain">{calculateGain(calculated.targetRealistis1)}%</span>
             </div>
           </div>
           <div className="compact-cell compact-target-cell">
             <span className="compact-label">Target Max</span>
             <div className="compact-target">
               <span className="compact-target-value compact-badge-warning">{calculated.targetMax}</span>
-              <span className="compact-target-gain">+{calculateGain(calculated.targetMax)}%</span>
+              <span className="compact-target-gain">{calculateGain(calculated.targetMax)}%</span>
             </div>
           </div>
         </div>
