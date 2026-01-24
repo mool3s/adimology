@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import type { AgentStoryResult, MatriksStoryItem, ChecklistKatalis } from '@/lib/types';
+import { renderWithLinks } from '@/lib/utils';
 
 interface AgentStoryCardProps {
   stories: AgentStoryResult[];
@@ -170,13 +171,13 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
                       {item.kategori_story}
                     </td>
                     <td style={{ padding: '0.5rem', color: 'var(--text-primary)' }}>
-                      {item.deskripsi_katalis}
+                      {renderWithLinks(item.deskripsi_katalis)}
                     </td>
                     <td style={{ padding: '0.5rem', color: 'var(--text-secondary)' }}>
-                      {item.logika_ekonomi_pasar}
+                      {renderWithLinks(item.logika_ekonomi_pasar)}
                     </td>
                     <td style={{ padding: '0.5rem', color: 'var(--accent-primary)' }}>
-                      {item.potensi_dampak_harga}
+                      {renderWithLinks(item.potensi_dampak_harga)}
                     </td>
                   </tr>
                 ))}
@@ -296,11 +297,11 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ color: 'var(--text-primary)', fontWeight: 500, marginBottom: '0.25rem' }}>
-                    {item.item}
+                    {renderWithLinks(item.item)}
                   </div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: '1.4' }}>
                     <span style={{ color: 'var(--accent-primary)', marginRight: '4px' }}>→</span>
-                    {item.dampak_instan}
+                    {renderWithLinks(item.dampak_instan)}
                   </div>
                 </div>
               </div>
@@ -413,7 +414,7 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
             lineHeight: 1.6,
             color: 'var(--text-secondary)'
           }}>
-            {data.keystat_signal}
+            {renderWithLinks(data.keystat_signal)}
           </div>
         </div>
       )}
@@ -429,9 +430,96 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
           lineHeight: 1.6
         }}>
           <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Kesimpulan:</span>
-          <p style={{ margin: '0.5rem 0 0', color: 'var(--text-secondary)' }}>{data.kesimpulan}</p>
+          <div style={{ margin: '0.5rem 0 0', color: 'var(--text-secondary)' }}>
+            {renderWithLinks(data.kesimpulan)}
+          </div>
+        </div>
+      )}
+
+      {/* Sumber Referensi */}
+      {data.sources && data.sources.length > 0 && (
+        <div style={{ marginTop: '1.5rem' }}>
+          <h4 style={{ 
+            fontSize: '1rem', 
+            color: 'var(--text-primary)',
+            marginBottom: '0.75rem',
+            fontWeight: 500,
+            opacity: 0.9
+          }}>
+            📚 Sumber Referensi
+          </h4>
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            fontSize: '0.85rem'
+          }}>
+            {data.sources.map((source, idx) => (
+              <a 
+                key={idx}
+                href={source.uri}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.75rem',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  color: 'var(--accent-primary)',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
+                }}
+              >
+                <span style={{ 
+                  fontSize: '0.7rem', 
+                  background: 'rgba(102, 126, 234, 0.2)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  color: 'var(--accent-primary)',
+                  fontWeight: 600
+                }}>
+                  {idx + 1}
+                </span>
+                <span style={{ 
+                  flex: 1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}>
+                  {source.title}
+                </span>
+                <svg 
+                  width="14" 
+                  height="14" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  style={{ opacity: 0.6, flexShrink: 0 }}
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>
+
   );
 }

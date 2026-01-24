@@ -412,7 +412,9 @@ export async function updateAgentStory(id: number, data: {
   strategi_trading?: object;
   kesimpulan?: string;
   error_message?: string;
+  sources?: { title: string; uri: string }[];
 }) {
+
   const { data: result, error } = await supabase
     .from('agent_stories')
     .update(data)

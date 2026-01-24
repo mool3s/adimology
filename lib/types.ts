@@ -249,6 +249,11 @@ export interface StrategiTrading {
   };
 }
 
+export interface SourceCitation {
+  title: string;
+  uri: string;
+}
+
 export interface AgentStoryResult {
   id?: number;
   emiten: string;
@@ -261,7 +266,9 @@ export interface AgentStoryResult {
   kesimpulan?: string;
   error_message?: string;
   created_at?: string;
+  sources?: SourceCitation[];
 }
+
 
 // Broker Flow Types (from tradersaham broker-intelligence API)
 export interface BrokerFlowDailyData {

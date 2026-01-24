@@ -8,6 +8,8 @@ import KeyStatsCard from './KeyStatsCard';
 import AgentStoryCard from './AgentStoryCard';
 import PriceGraph from './PriceGraph';
 import BrokerFlowCard from './BrokerFlowCard';
+import EmitenHistoryCard from './EmitenHistoryCard';
+
 import html2canvas from 'html2canvas';
 import type { StockInput, StockAnalysisResult, KeyStatsData, AgentStoryResult } from '@/lib/types';
 import { getDefaultDate } from '@/lib/utils';
@@ -410,6 +412,15 @@ export default function Calculator({ selectedStock }: CalculatorProps) {
                 keyStats={keyStats}
               />
             )}
+
+            {/* Emiten History Card - Full Width */}
+            <div style={{
+              gridColumn: '1 / -1',
+              width: '100%',
+              marginTop: '1rem'
+            }}>
+              <EmitenHistoryCard emiten={result.input.emiten} />
+            </div>
 
             {/* Price Graph + Broker Flow Section */}
             <div style={{

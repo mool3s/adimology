@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import type { WatchlistItem, WatchlistGroup } from '@/lib/types';
-import { CheckCircle2, XCircle, MinusCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, MinusCircle, Search, Filter } from 'lucide-react';
 
 interface WatchlistSidebarProps {
   onSelect?: (symbol: string) => void;
@@ -15,6 +15,12 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshSeed, setRefreshSeed] = useState(0);
+
+  // Filter States
+  const [filterEmiten, setFilterEmiten] = useState('');
+  const [filterSector, setFilterSector] = useState('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'OK' | 'NG' | 'Neutral'>('all');
+  const [showFilters, setShowFilters] = useState(false);
 
   // Fetch groups and watchlist items
   useEffect(() => {
@@ -111,6 +117,34 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
     return () => window.removeEventListener('emiten-flagged' as any, handleFlagUpdate);
   }, []);
 
+  // Extract unique sectors for dropdown
+  const availableSectors = useMemo(() => {
+    const sectors = new Set<string>();
+    watchlist.forEach(item => {
+      if (item.sector) sectors.add(item.sector);
+    });
+    return Array.from(sectors).sort();
+  }, [watchlist]);
+
+  // Filtered Watchlist Logic
+  const filteredWatchlist = useMemo(() => {
+    return watchlist.filter(item => {
+      // 1. Filter by Emiten/Symbol
+      const searchStr = filterEmiten.toUpperCase();
+      const symbolMatch = (item.symbol || item.company_code || '').toUpperCase().includes(searchStr);
+      const nameMatch = (item.company_name || '').toUpperCase().includes(searchStr);
+      if (searchStr && !symbolMatch && !nameMatch) return false;
+
+      // 2. Filter by Sector
+      if (filterSector !== 'all' && item.sector !== filterSector) return false;
+
+      // 3. Filter by Status (Flag)
+      if (filterStatus !== 'all' && item.flag !== filterStatus) return false;
+
+      return true;
+    });
+  }, [watchlist, filterEmiten, filterSector, filterStatus]);
+
   const selectedGroup = groups.find(g => g.watchlist_id === selectedGroupId);
 
   if (loading && groups.length === 0) {
@@ -150,14 +184,14 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
   }
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header with Group Selector */}
       <div style={{ marginBottom: '1rem' }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '0.5rem'
+          marginBottom: '0.8rem'
         }}>
           <h3 style={{
             margin: 0,
@@ -168,17 +202,37 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
           }}>
             Watchlist
           </h3>
-          <span style={{
-            fontSize: '0.7rem',
-            color: 'var(--text-muted)',
-            background: 'rgba(255,255,255,0.1)',
-            padding: '2px 6px',
-            borderRadius: '4px'
-          }}>
-            {watchlist.length}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              style={{
+                background: showFilters ? 'rgba(102, 126, 234, 0.2)' : 'transparent',
+                border: 'none',
+                color: showFilters ? 'var(--accent-primary)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                padding: '4px',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'all 0.2s'
+              }}
+              title="Toggle Filters"
+            >
+              <Filter size={14} />
+            </button>
+            <span style={{
+              fontSize: '0.7rem',
+              color: 'var(--text-muted)',
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2px 6px',
+              borderRadius: '4px'
+            }}>
+              {filteredWatchlist.length}
+            </span>
+          </div>
         </div>
 
+        {/* Group Selector */}
         {groups.length > 1 && (
           <select
             value={selectedGroupId || ''}
@@ -192,7 +246,8 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
               borderRadius: '8px',
               color: 'var(--text-primary)',
               cursor: 'pointer',
-              outline: 'none'
+              outline: 'none',
+              marginBottom: showFilters ? '0.75rem' : '0'
             }}
           >
             {groups.map(g => (
@@ -202,12 +257,113 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
             ))}
           </select>
         )}
+
+        {/* Filter UI */}
+        {(showFilters || filterEmiten || filterSector !== 'all' || filterStatus !== 'all') && (
+          <div style={{ 
+            marginTop: '0.5rem', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '0.5rem',
+            padding: '0.75rem',
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '10px',
+            border: '1px solid rgba(255,255,255,0.05)'
+          }}>
+            {/* Search Input */}
+            <div style={{ position: 'relative' }}>
+              <Search size={12} style={{ position: 'absolute', left: '0.5rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <input
+                type="text"
+                placeholder="Search Emiten..."
+                value={filterEmiten}
+                onChange={(e) => setFilterEmiten(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.45rem 0.5rem 0.45rem 1.75rem',
+                  fontSize: '0.8rem',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '6px',
+                  color: 'var(--text-primary)',
+                  outline: 'none'
+                }}
+              />
+            </div>
+
+            {/* Sector Filter - Stacked */}
+            <select
+              value={filterSector}
+              onChange={(e) => setFilterSector(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.4rem',
+                fontSize: '0.75rem',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                color: 'var(--text-primary)',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="all" style={{ background: '#1a1a1f', color: '#fff' }}>All Sectors</option>
+              {availableSectors.map(s => (
+                <option key={s} value={s} style={{ background: '#1a1a1f', color: '#fff' }}>{s}</option>
+              ))}
+            </select>
+
+            {/* Status Filter - Stacked */}
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as any)}
+              style={{
+                width: '100%',
+                padding: '0.4rem',
+                fontSize: '0.75rem',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                color: 'var(--text-primary)',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="all" style={{ background: '#1a1a1f', color: '#fff' }}>All Status</option>
+              <option value="OK" style={{ background: '#1a1a1f', color: '#3b82f6' }}>🔵 OK</option>
+              <option value="NG" style={{ background: '#1a1a1f', color: '#f97316' }}>🟠 NG</option>
+              <option value="Neutral" style={{ background: '#1a1a1f', color: '#a0a0b8' }}>⚪ Neutral</option>
+            </select>
+
+            {(filterEmiten || filterSector !== 'all' || filterStatus !== 'all') && (
+              <button 
+                onClick={() => {
+                  setFilterEmiten('');
+                  setFilterSector('all');
+                  setFilterStatus('all');
+                }}
+                style={{
+                  fontSize: '0.7rem',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--accent-warning)',
+                  cursor: 'pointer',
+                  textAlign: 'right',
+                  padding: '2px 0'
+                }}
+              >
+                Reset Filters
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Loading indicator when switching groups */}
       {loading && (
         <div style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '1rem' }}>
-          Loading...
+          <div className="spinner" style={{ width: '16px', height: '16px', margin: '0 auto 0.5rem' }}></div>
+          <div style={{ fontSize: '0.75rem' }}>Refreshing...</div>
         </div>
       )}
 
@@ -231,11 +387,18 @@ export default function WatchlistSidebar({ onSelect }: WatchlistSidebarProps) {
           display: 'flex',
           flexDirection: 'column',
           gap: '0.25rem',
-          maxHeight: 'calc(100vh - 160px)',
-          overflowY: 'auto'
+          flex: 1,
+          overflowY: 'auto',
+          paddingRight: '4px'
         }}
       >
-        {watchlist.map((item, index) => {
+        {filteredWatchlist.length === 0 && !loading && (
+          <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '2rem' }}>
+            No items found
+          </div>
+        )}
+        {filteredWatchlist.map((item, index) => {
+
           const percentValue = parseFloat(item.percent) || 0;
           const isPositive = percentValue >= 0;
 
