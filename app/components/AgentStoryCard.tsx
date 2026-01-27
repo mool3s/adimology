@@ -84,7 +84,7 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
         gap: '0.75rem',
         marginBottom: '1.25rem',
         paddingBottom: '0.75rem',
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
+        borderBottom: '1px solid var(--border-color)'
       }}>
         <span style={{ fontSize: '1.25rem' }}>🤖</span>
         <h3 style={{ 
@@ -105,8 +105,8 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               marginLeft: 'auto',
               padding: '0.25rem 0.5rem',
               fontSize: '0.75rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-color)',
               borderRadius: '6px',
               color: 'var(--text-secondary)',
               cursor: 'pointer',
@@ -157,7 +157,7 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               borderCollapse: 'collapse'
             }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                   <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: 400 }}>Kategori</th>
                   <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: 400 }}>Katalis</th>
                   <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: 400 }}>Logika Pasar</th>
@@ -166,7 +166,7 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               </thead>
               <tbody>
                 {data.matriks_story.map((item: MatriksStoryItem, idx: number) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <tr key={idx} style={{ borderBottom: '1px solid var(--glass-inner-glow)' }}>
                     <td style={{ padding: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
                       {item.kategori_story}
                     </td>
@@ -206,10 +206,10 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
             fontSize: '0.875rem'
           }}>
             <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
+              background: 'var(--bg-card)', 
               padding: '0.75rem', 
               borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.05)'
+              border: '1px solid var(--border-color)'
             }}>
               <span style={{ color: 'var(--accent-success)', fontWeight: 500 }}>Strengths</span>
               <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: 'var(--text-secondary)' }}>
@@ -217,10 +217,10 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               </ul>
             </div>
             <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
+              background: 'var(--bg-card)', 
               padding: '0.75rem', 
               borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.05)'
+              border: '1px solid var(--border-color)'
             }}>
               <span style={{ color: 'var(--accent-warning)', fontWeight: 500 }}>Weaknesses</span>
               <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: 'var(--text-secondary)' }}>
@@ -228,10 +228,10 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               </ul>
             </div>
             <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
+              background: 'var(--bg-card)', 
               padding: '0.75rem', 
               borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.05)'
+              border: '1px solid var(--border-color)'
             }}>
               <span style={{ color: 'var(--accent-primary)', fontWeight: 500 }}>Opportunities</span>
               <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: 'var(--text-secondary)' }}>
@@ -239,10 +239,10 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
               </ul>
             </div>
             <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
+              background: 'var(--bg-card)', 
               padding: '0.75rem', 
               borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.05)'
+              border: '1px solid var(--border-color)'
             }}>
               <span style={{ color: '#ffc107', fontWeight: 500 }}>Threats</span>
               <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: 'var(--text-secondary)' }}>
@@ -276,9 +276,9 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
                 display: 'flex', 
                 gap: '0.75rem',
                 padding: '0.75rem',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--bg-card)',
                 borderRadius: '8px',
-                border: '1px solid rgba(255,255,255,0.05)',
+                border: '1px solid var(--border-color)',
                 alignItems: 'flex-start'
               }}>
                 <div style={{ 
@@ -331,9 +331,9 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
             {/* Tipe Saham */}
             <div style={{ 
               padding: '0.75rem', 
-              background: 'rgba(255,255,255,0.03)', 
+              background: 'var(--bg-card)', 
               borderRadius: '8px', 
-              border: '1px solid rgba(255,255,255,0.05)',
+              border: '1px solid var(--border-color)',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.25rem'
@@ -345,9 +345,9 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
             {/* Target Entry */}
             <div style={{ 
               padding: '0.75rem', 
-              background: 'rgba(255,255,255,0.03)', 
+              background: 'var(--bg-card)', 
               borderRadius: '8px', 
-              border: '1px solid rgba(255,255,255,0.05)',
+              border: '1px solid var(--border-color)',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.25rem'
@@ -407,9 +407,9 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
           </h4>
           <div style={{ 
             padding: '1rem',
-            background: 'rgba(255, 255, 255, 0.03)',
+            background: 'var(--bg-card)',
             borderRadius: '8px',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
+            border: '1px solid var(--border-color)',
             fontSize: '0.875rem',
             lineHeight: 1.6,
             color: 'var(--text-secondary)'
@@ -423,9 +423,9 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
       {data.kesimpulan && (
         <div style={{ 
           padding: '1rem',
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'var(--bg-card)',
           borderRadius: '8px',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          border: '1px solid var(--border-color)',
           fontSize: '0.9rem',
           lineHeight: 1.6
         }}>
@@ -465,20 +465,12 @@ export default function AgentStoryCard({ stories, status, onRetry }: AgentStoryC
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.75rem',
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'var(--bg-card)',
                   borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.05)',
+                  border: '1px solid var(--border-color)',
                   color: 'var(--accent-primary)',
                   textDecoration: 'none',
                   transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
                 }}
               >
                 <span style={{ 

@@ -205,6 +205,7 @@ export default function InputForm({
             <button
               type="submit"
               disabled={loading}
+              className="solid-btn"
               style={{
                 minWidth: '100px',
                 height: '38px',
@@ -215,10 +216,10 @@ export default function InputForm({
                 justifyContent: 'center',
                 borderRadius: '8px',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s',
-                background: '#7c3aed',
+                background: 'var(--accent-primary)',
                 color: 'white',
-                border: '1px solid #7c3aed',
+                border: '1px solid var(--accent-primary)',
+                boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)',
                 opacity: loading ? 0.6 : 1
               }}
             >
@@ -229,7 +230,7 @@ export default function InputForm({
               type="button"
               onClick={onAnalyzeAI}
               disabled={storyStatus === 'pending' || storyStatus === 'processing' || !hasResult}
-              className="btn btn-primary compact-btn"
+              className="solid-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -238,12 +239,14 @@ export default function InputForm({
                 padding: '0 1rem',
                 fontSize: '0.8rem',
                 fontWeight: '600',
-                background: 'linear-gradient(135deg, #6C63FF, #00C896)',
-                border: 'none',
+                borderRadius: '8px',
+                background: '#4f46e5', // Solid shade for Analyze
+                color: 'white',
+                border: '1px solid #4f46e5',
                 opacity: hasResult ? 1 : 0.5,
                 pointerEvents: hasResult ? 'auto' : 'none',
                 whiteSpace: 'nowrap',
-                boxShadow: '0 4px 12px rgba(108, 99, 255, 0.2)'
+                boxShadow: '0 4px 12px rgba(79, 70, 229, 0.3)'
               }}
             >
               {storyStatus === 'pending' || storyStatus === 'processing' ? (
@@ -266,7 +269,7 @@ export default function InputForm({
             display: 'flex', 
             gap: '0.4rem', 
             marginLeft: 'auto', 
-            borderLeft: '1px solid rgba(255,255,255,0.1)', 
+            borderLeft: '1px solid var(--border-color)', 
             paddingLeft: '0.8rem',
             alignItems: 'center'
           }}>
@@ -274,6 +277,7 @@ export default function InputForm({
               type="button"
               onClick={() => handleFlag('OK')}
               title="Mark as OK"
+              className="flag-btn"
               style={{
                 width: '38px',
                 height: '38px',
@@ -282,7 +286,6 @@ export default function InputForm({
                 justifyContent: 'center',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
                 background: currentFlag === 'OK' ? '#3b82f6' : 'rgba(59, 130, 246, 0.1)',
                 color: currentFlag === 'OK' ? 'white' : '#3b82f6',
                 border: `1px solid ${currentFlag === 'OK' ? '#3b82f6' : 'rgba(59, 130, 246, 0.3)'}`,
@@ -295,6 +298,7 @@ export default function InputForm({
               type="button"
               onClick={() => handleFlag('NG')}
               title="Mark as NG"
+              className="flag-btn"
               style={{
                 width: '38px',
                 height: '38px',
@@ -303,7 +307,6 @@ export default function InputForm({
                 justifyContent: 'center',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
                 background: currentFlag === 'NG' ? '#f97316' : 'rgba(249, 115, 22, 0.1)',
                 color: currentFlag === 'NG' ? 'white' : '#f97316',
                 border: `1px solid ${currentFlag === 'NG' ? '#f97316' : 'rgba(249, 115, 22, 0.3)'}`,
@@ -316,6 +319,7 @@ export default function InputForm({
               type="button"
               onClick={() => handleFlag('Neutral')}
               title="Mark as Neutral"
+              className="flag-btn"
               style={{
                 width: '38px',
                 height: '38px',
@@ -324,7 +328,6 @@ export default function InputForm({
                 justifyContent: 'center',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
                 background: currentFlag === 'Neutral' ? 'var(--text-secondary)' : 'rgba(255, 255, 255, 0.05)',
                 color: currentFlag === 'Neutral' ? 'white' : 'var(--text-secondary)',
                 border: `1px solid ${currentFlag === 'Neutral' ? 'var(--text-secondary)' : 'rgba(255, 255, 255, 0.1)'}`,

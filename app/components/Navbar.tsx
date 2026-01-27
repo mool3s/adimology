@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import TokenStatusIndicator from './TokenStatusIndicator';
 import JobStatusIndicator from './JobStatusIndicator';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -62,6 +63,7 @@ const Navbar = () => {
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
             <JobStatusIndicator />
             <TokenStatusIndicator />
+            <ThemeToggle />
           </div>
         </div>
       </div>
