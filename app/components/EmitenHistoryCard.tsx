@@ -29,24 +29,45 @@ interface EmitenHistoryCardProps {
 
 const HEADER_HEIGHT = 45;
 const ROW_HEIGHT = 56;
+const ROW_COUNT_OPTIONS = [3, 5, 10, 20];
+const PROFILE_KEY = 'history_row_count';
 
 export default function EmitenHistoryCard({ emiten }: EmitenHistoryCardProps) {
   const [data, setData] = useState<AnalysisRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [rowCount, setRowCount] = useState(5);
+
+  // Load saved row count preference on mount
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const res = await fetch(`/api/profile?key=${PROFILE_KEY}`);
+        const json = await res.json();
+        if (json.success && json.value) {
+          const saved = parseInt(json.value, 10);
+          if (ROW_COUNT_OPTIONS.includes(saved)) {
+            setRowCount(saved);
+          }
+        }
+      } catch {
+        // Silently use default
+      }
+    };
+    loadProfile();
+  }, []);
 
   useEffect(() => {
     if (emiten) {
       fetchHistory();
     }
-  }, [emiten]);
+  }, [emiten, rowCount]);
 
   const fetchHistory = async () => {
     setLoading(true);
     try {
-      // Fetch 5 most recent records
       const params = new URLSearchParams({
         emiten: emiten.toUpperCase(),
-        limit: '5',
+        limit: String(rowCount),
         sortBy: 'from_date',
         sortOrder: 'desc',
       });
@@ -63,6 +84,20 @@ export default function EmitenHistoryCard({ emiten }: EmitenHistoryCardProps) {
       console.error('Error fetching emiten history:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRowCountChange = async (count: number) => {
+    setRowCount(count);
+    // Save preference to database
+    try {
+      await fetch('/api/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: PROFILE_KEY, value: String(count) }),
+      });
+    } catch {
+      // Silently fail — preference will still work in-session
     }
   };
 
@@ -97,8 +132,19 @@ export default function EmitenHistoryCard({ emiten }: EmitenHistoryCardProps) {
 
   return (
     <div className="glass-card-static" style={{ marginBottom: '1rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>📊 Riwayat Analisis {emiten} (5 Terakhir)</h3>
+      <div className="broker-flow-header">
+        <span className="broker-flow-title">📊 Riwayat Analisis {emiten} ({rowCount} Terakhir)</span>
+        <div className="broker-flow-filters">
+          {ROW_COUNT_OPTIONS.map((count) => (
+            <button
+              key={count}
+              onClick={() => handleRowCountChange(count)}
+              className={`broker-flow-filter-btn ${rowCount === count ? 'active' : ''}`}
+            >
+              {count}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div style={{ 
