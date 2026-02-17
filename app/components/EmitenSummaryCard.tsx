@@ -19,6 +19,36 @@ const ROW_COUNT_OPTIONS = [3, 5, 10, 20, 50];
 const HEADER_HEIGHT = 45;
 const ROW_HEIGHT = 65;
 
+const getBrokerColor = (code: string) => {
+  if (!code) return 'transparent';
+  const uCode = code.toUpperCase();
+
+  // Explicit overrides for key brokers to ensure absolute distinction
+  const overrides: Record<string, string> = {
+    'XL': 'hsla(345, 85%, 82%, 0.45)',  // Soft Red/Pink
+    'CC': 'hsla(145, 85%, 82%, 0.45)',  // Soft Emerald Green
+    'ZP': 'hsla(265, 85%, 82%, 0.45)',  // Soft Purple/Violet
+    'AK': 'hsla(200, 85%, 82%, 0.45)',  // Soft Blue
+    'MG': 'hsla(25, 85%, 82%, 0.45)',   // Soft Orange
+    'YP': 'hsla(180, 85%, 82%, 0.45)',  // Soft Cyan/Teal
+    'PD': 'hsla(55, 85%, 82%, 0.45)',   // Soft Gold/Yellow
+    'AZ': 'hsla(100, 85%, 82%, 0.45)',  // Soft Lime
+  };
+
+  if (overrides[uCode]) return overrides[uCode];
+
+  // Fallback for other brokers using improved distribution
+  let hash = 0;
+  for (let i = 0; i < uCode.length; i++) {
+    hash += uCode.charCodeAt(i);
+    hash += (hash << 10);
+    hash ^= (hash >> 6);
+  }
+  const ratio = 0.618033988749895;
+  const hue = Math.floor(((Math.abs(hash) * ratio) % 1) * 360);
+  return `hsla(${hue}, 75%, 80%, 0.35)`;
+};
+
 export default function EmitenSummaryCard() {
   const [data, setData] = useState<SummaryRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,15 +84,17 @@ export default function EmitenSummaryCard() {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.85rem' }}>{bandarObj.name}</span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600 }}>({bandarObj.count})</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 700, opacity: 0.9 }}>({bandarObj.count})</span>
         </div>
         <div style={{ 
           fontSize: '0.65rem', 
-          color: 'var(--text-secondary)',
-          background: 'var(--border-color)',
-          padding: '1px 4px',
-          borderRadius: '3px',
-          whiteSpace: 'nowrap'
+          color: 'var(--text-primary)',
+          background: 'rgba(255, 255, 255, 0.1)',
+          padding: '1px 6px',
+          borderRadius: '4px',
+          whiteSpace: 'nowrap',
+          marginTop: '2px',
+          backdropFilter: 'brightness(1.2)'
         }}>
           {typeLabel}
         </div>
@@ -122,15 +154,31 @@ export default function EmitenSummaryCard() {
               {data.map((record, index) => (
                 <tr
                   key={record.emiten}
+                  className="summary-row"
                   style={{
                     height: `${ROW_HEIGHT}px`,
                     borderBottom: index < data.length - 1 ? '1px solid var(--border-color)' : 'none',
-                    background: index % 2 === 0 ? 'transparent' : 'var(--glass-inner-glow)',
+                    background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.025)',
                     transition: 'background 0.2s ease'
                   }}
                 >
                   <td style={{ padding: '0 1rem' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--accent-primary)', fontSize: '0.85rem' }}>{record.emiten}</div>
+                    <a 
+                      href={`/?symbol=${record.emiten}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ 
+                        fontWeight: 700, 
+                        color: 'var(--accent-primary)', 
+                        fontSize: '0.9rem',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        display: 'inline-block'
+                      }}
+                      className="emiten-link"
+                    >
+                      {record.emiten}
+                    </a>
                     {record.sector && (
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>{record.sector}</div>
                     )}
@@ -154,18 +202,31 @@ export default function EmitenSummaryCard() {
                     <div style={{ 
                       fontSize: '0.85rem',
                       fontWeight: 700,
-                      color: record.totalHitRate >= 80 ? 'var(--accent-success)' : record.totalHitRate >= 50 ? 'var(--accent-warning)' : 'var(--accent-danger)'
+                      color: 'var(--text-primary)'
                     }}>
                       {formatPercent(record.totalHitRate)}
                     </div>
                   </td>
-                  <td style={{ padding: '0 1rem', textAlign: 'center', borderLeft: '1px solid var(--border-color)' }}>
+                  <td style={{ 
+                    padding: '0 1rem', 
+                    textAlign: 'center', 
+                    borderLeft: '1px solid var(--border-color)',
+                    background: record.topBandars[0] ? getBrokerColor(record.topBandars[0].name) : 'transparent'
+                  }}>
                     {renderBandarCell(record.topBandars[0])}
                   </td>
-                  <td style={{ padding: '0 1rem', textAlign: 'center' }}>
+                  <td style={{ 
+                    padding: '0 1rem', 
+                    textAlign: 'center',
+                    background: record.topBandars[1] ? getBrokerColor(record.topBandars[1].name) : 'transparent'
+                  }}>
                     {renderBandarCell(record.topBandars[1])}
                   </td>
-                  <td style={{ padding: '0 1rem', textAlign: 'center' }}>
+                  <td style={{ 
+                    padding: '0 1rem', 
+                    textAlign: 'center',
+                    background: record.topBandars[2] ? getBrokerColor(record.topBandars[2].name) : 'transparent'
+                  }}>
                     {renderBandarCell(record.topBandars[2])}
                   </td>
                 </tr>
