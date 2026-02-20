@@ -27,8 +27,11 @@ Agar migrasi otomatis dapat berjalan, Anda perlu menyiapkan infrastruktur pelaca
 2. Jika sudah berhasil akan tampak seperti di bawah ini. Kedepannya klik Sync fork untuk mendapatkan update fitur terbaru.
 ![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify02.png)
 3. Login ke [Netlify](https://www.netlify.com/) dan klik **Add new site > Import an existing project**
-4. Pilih repository Adimology dari GitHub anda
-5. Tambahkan **Environment Variables** di Netlify:
+4. Pilih Github, akan ada pop up untuk login ke github, ikuti saja langkahnya
+![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify03.png)
+5. Pilih repository Adimology dari GitHub anda
+![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify04.png)
+6. Tambahkan **Environment Variables** di Netlify:
 
    | Variable | Nilai | Wajib |
    |----------|-------|:-----:|
@@ -37,8 +40,9 @@ Agar migrasi otomatis dapat berjalan, Anda perlu menyiapkan infrastruktur pelaca
    | `CRON_SECRET` | String acak untuk keamanan cron | ✅ |
    | `GEMINI_API_KEY` | API Key dari [Google AI Studio](https://aistudio.google.com/) | ✅ |
 
-5. Klik **Deploy site** dan tunggu hingga selesai
-6. Catat URL Netlify Anda (contoh: `https://your-app.netlify.app`)
+7. Klik **Deploy site** dan tunggu hingga selesai
+![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify05.png)
+8. Catat URL Netlify Anda (contoh: `https://your-app.netlify.app`) akan digunakan untuk proses berikutnya 
 
 ## A3. Setup Chrome Extension (untuk Cloud)
 

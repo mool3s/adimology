@@ -87,7 +87,7 @@ Pilih salah satu opsi instalasi yang sesuai dengan kebutuhan Anda:
 Opsi ini direkomendasikan untuk penggunaan harian karena aplikasi akan berjalan secara otomatis di cloud dan dapat diakses dari mana saja.
 
 > [!TIP]
-> Panduan ini juga tersedia di **[Wiki GitHub](https://github.com/bhaktiutama/adimology/wiki/Deploy-ke-Cloud)** untuk referensi yang lebih rapi.
+> Panduan ini juga tersedia di **[Wiki GitHub](https://github.com/bhaktiutama/adimology/wiki/Deploy-Cloud)** untuk referensi yang lebih rapi.
 
 Ikuti langkah-langkah berikut secara berurutan untuk menjalankan Adimology di cloud menggunakan Netlify dan Supabase:
 
