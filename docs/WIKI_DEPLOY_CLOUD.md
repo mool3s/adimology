@@ -13,8 +13,8 @@ Ikuti langkah-langkah berikut secara berurutan untuk menjalankan Adimology di cl
 
 **PENTING: Persiapan Database (Wajib Sekali Saja)**
 Agar migrasi otomatis dapat berjalan, Anda perlu menyiapkan infrastruktur pelacakan migrasi secara manual:
-1. Buka folder **supabase** di repository ini, pilih file <a href="https://github.com/bhaktiutama/adimology/blob/main/supabase/000_init.sql" target="_blank">**000_init.sql**</a>, lalu salin (copy) seluruh teks yang ada di dalamnya dan tempel (paste) ke editor tadi.
-2. Buka **SQL Editor** di Dashboard Supabase dan paste script tersebut.
+1. Buka folder **supabase** di repository ini, pilih file <a href="https://github.com/bhaktiutama/adimology/blob/main/supabase/000_init.sql" target="_blank">**000_init.sql**</a>, lalu salin (copy) seluruh teks yang ada di dalamnya.
+2. Buka **SQL Editor** di Dashboard Supabase dan paste teks script tersebut.
 3. Klik **Run**.
 ![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/supabase03.png)
 4. Setelah berhasil, migrasi database lainnya (`001_...` dst) akan dijalankan otomatis setiap kali build di Netlify.
