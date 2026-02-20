@@ -13,7 +13,7 @@ Ikuti langkah-langkah berikut secara berurutan untuk menjalankan Adimology di cl
 
 **PENTING: Persiapan Database (Wajib Sekali Saja)**
 Agar migrasi otomatis dapat berjalan, Anda perlu menyiapkan infrastruktur pelacakan migrasi secara manual:
-1. Buka folder **supabase** di repository ini, pilih file [**000_init.sql**](https://github.com/bhaktiutama/adimology/blob/main/supabase/000_init.sql), lalu salin (copy) seluruh teks yang ada di dalamnya dan tempel (paste) ke editor tadi.
+1. Buka folder **supabase** di repository ini, pilih file <a href="https://github.com/bhaktiutama/adimology/blob/main/supabase/000_init.sql" target="_blank">**000_init.sql**</a>, lalu salin (copy) seluruh teks yang ada di dalamnya dan tempel (paste) ke editor tadi.
 2. Buka **SQL Editor** di Dashboard Supabase.
 3. Klik **New query**.
 4. Klik **Run**.
@@ -22,10 +22,13 @@ Agar migrasi otomatis dapat berjalan, Anda perlu menyiapkan infrastruktur pelaca
 
 ## A2. Deploy ke Netlify
 
-1. **Fork Repository**: Buka repository Adimology ini di GitHub, lalu klik tombol **Fork** di pojok kanan atas. Ini akan membuat salinan project ini di akun GitHub Anda sendiri agar Anda bisa menghubungkannya ke Netlify.
-2. Login ke [Netlify](https://www.netlify.com/) dan klik **Add new site > Import an existing project**
-3. Pilih repository Adimology dari GitHub
-4. Tambahkan **Environment Variables** di Netlify:
+1. **Fork Repository**: Pastikan Anda sudah memiliki dan login ke akun GitHub Anda. Buka repository Adimology ini di GitHub, lalu klik tombol **Fork** di pojok kanan atas. Ini akan membuat salinan project ini di akun GitHub Anda sendiri agar Anda bisa menghubungkannya ke Netlify.
+![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify01.png)
+2. Jika sudah berhasil akan tampak seperti di bawah ini. Kedepannya klik Sync fork untuk mendapatkan update fitur terbaru.
+![Supabase Setup](https://raw.githubusercontent.com/bhaktiutama/adimology/main/public/netlify02.png)
+3. Login ke [Netlify](https://www.netlify.com/) dan klik **Add new site > Import an existing project**
+4. Pilih repository Adimology dari GitHub anda
+5. Tambahkan **Environment Variables** di Netlify:
 
    | Variable | Nilai | Wajib |
    |----------|-------|:-----:|
